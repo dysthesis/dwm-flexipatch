@@ -906,6 +906,13 @@ static const char *upvol[]	= {
 	"@DEFAULT_AUDIO_SINK@",
 	"5%+"
 };
+static const char *downvol[]	= { 
+	"wpctl",
+	"set-volume", 
+	"@DEFAULT_AUDIO_SINK@",
+	"5%-"
+};
+
 static const Key keys[] = {
 	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = upvol } },
         { 0,              XF86XK_AudioLowerVolume, spawn,          {.v = downvol } },
