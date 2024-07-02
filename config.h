@@ -1,3 +1,5 @@
+#include <X11/XF86keysym.h>
+
 /* See LICENSE file for copyright and license details. */
 
 /* appearance */
@@ -904,6 +906,8 @@ static const Key on_empty_keys[] = {
 #endif // ON_EMPTY_KEYS_PATCH
 
 static const Key keys[] = {
+	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = upvol } },
+        { 0,              XF86XK_AudioLowerVolume, spawn,          {.v = downvol } },
 	/* modifier                     key            function                argument */
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
