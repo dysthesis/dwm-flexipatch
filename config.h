@@ -858,27 +858,21 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 #endif // NODMENU_PATCH
 static const char *dmenucmd[] = {
 	"dmenu_run",
+	"-p", "   ",
 	#if !NODMENU_PATCH
 	"-m", dmenumon,
 	#endif // NODMENU_PATCH
-	"-fn", dmenufont,
-	"-nb", normbgcolor,
-	"-nf", normfgcolor,
-	"-sb", selbgcolor,
-	"-sf", selfgcolor,
+	// "-fn", dmenufont,
+	// "-nb", normbgcolor,
+	// "-nf", normfgcolor,
+	// "-sb", selbgcolor,
+	// "-sf", selfgcolor,
 	#if BAR_DMENUMATCHTOP_PATCH
 	topbar ? NULL : "-b",
 	#endif // BAR_DMENUMATCHTOP_PATCH
 	NULL
 };
-static const char *roficmd[] = {
-	"rofi",
-	"-show",	"drun",
-	"-matching",	"fuzzy",
-	"-sort",
-	"-sort-method",	"fzf",
-	NULL
-};
+
 static const char *termcmd[]  = { "st", NULL };
 
 #if BAR_STATUSCMD_PATCH
@@ -905,6 +899,13 @@ static const Key on_empty_keys[] = {
 };
 #endif // ON_EMPTY_KEYS_PATCH
 
+static const char *passmenu[]	= { "bash ~/.local/scripts/passmenu", NULL };
+static const char *upvol[]	= { 
+	"wpctl",
+	"set-volume", 
+	"@DEFAULT_AUDIO_SINK@",
+	"5%+"
+};
 static const Key keys[] = {
 	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = upvol } },
         { 0,              XF86XK_AudioLowerVolume, spawn,          {.v = downvol } },
@@ -912,7 +913,7 @@ static const Key keys[] = {
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
 	#endif // KEYMODES_PATCH
-	{ MODKEY,                       XK_r,          spawn,                  {.v = roficmd } },
+	{ MODKEY,                       XK_r,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY,		        XK_Return,     spawn,                  {.v = termcmd } },
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
