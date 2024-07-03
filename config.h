@@ -910,13 +910,15 @@ static const char *upvol[]	= {
 	"wpctl",
 	"set-volume", 
 	"@DEFAULT_AUDIO_SINK@",
-	"5%+"
+	"5%+",
+	NULL
 };
 static const char *downvol[]	= { 
 	"wpctl",
 	"set-volume", 
 	"@DEFAULT_AUDIO_SINK@",
-	"5%-"
+	"5%-",
+	NULL
 };
 
 static const Key keys[] = {
