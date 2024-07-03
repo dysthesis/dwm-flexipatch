@@ -929,7 +929,8 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
 	#endif // KEYMODES_PATCH
 	{ MODKEY,                       XK_r,          spawn,                  {.v = dmenucmd } },
-	{ MODKEY,                       XK_p,          spawn,                  {.v = passmenu } },
+	{ MODKEY|ShiftMask,		XK_p,	       spawn,		       {.v = (const char*[]){ "passmenu", NULL } } },
+	{ MODKEY,		        XK_p,	       spawn,		       {.v = (const char*[]){ "flameshot", "gui", NULL } } },
 	{ MODKEY,		        XK_Return,     spawn,                  {.v = termcmd } },
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },
