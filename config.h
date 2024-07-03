@@ -172,7 +172,7 @@ static char c000000[]                    = "#000000"; // placeholder value
 
 static char normfgcolor[]                = "#ffffff";
 static char normbgcolor[]                = "#000000";
-static char normbordercolor[]            = "#1e1e2e";
+static char normbordercolor[]            = "#000000";
 static char normfloatcolor[]             = "#1e1e2e";
 
 static char selfgcolor[]                 = "#000000";
