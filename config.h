@@ -412,11 +412,13 @@ static const char *const autostart[] = {
 static const char *scratchpadcmd[] = {"s", "st", "-n", "term", NULL};
 #elif SCRATCHPADS_PATCH
 const char *spcmd1[] = {"st", "-n", "term", "-g", "180x30", NULL };
-const char *spcmd2[] = {"st", "-n", "notes", "-g", "180x30", "-e", "sh", "-c", "tmux attach-session -t notes || tmux new-session -s notes -c ~/Documents/Notes/", NULL};
+const char *spcmd2[] = {"st", "-n", "notes", "-g", "180x30", "-e", "sh", "-c", "tmux attach-session -t notes || tmux new-session -s notes -c ~/Documents/Notes/", NULL };
+const char *spcmd3[] = {"signal-desktop", NULL };
 static Sp scratchpads[] = {
    /* name          cmd  */
    {"term",      spcmd1},
    {"notes",      spcmd2},
+   {"signal",      spcmd3},
 };
 #endif // SCRATCHPADS_PATCH
 
@@ -508,6 +510,7 @@ static const Rule rules[] = {
 	#elif SCRATCHPADS_PATCH
 	RULE(.instance = "term", .tags = SPTAG(0), .isfloating = 1)
 	RULE(.instance = "notes", .tags = SPTAG(1), .isfloating = 1)
+	RULE(.instance = "signal", .tags = SPTAG(2), .isfloating = 1)
 	#endif // SCRATCHPADS_PATCH
 };
 
@@ -1140,6 +1143,9 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_n,      togglescratch,          {.ui = 1 } },
 	{ MODKEY|ControlMask,           XK_n,      setscratch,             {.ui = 1 } },
 	{ MODKEY|ShiftMask,             XK_n,      removescratch,          {.ui = 1 } },
+	{ MODKEY,                       XK_s,      togglescratch,          {.ui = 2 } },
+	{ MODKEY|ControlMask,           XK_s,      setscratch,             {.ui = 2 } },
+	{ MODKEY|ShiftMask,             XK_s,      removescratch,          {.ui = 2 } },
 	#endif // SCRATCHPADS_PATCH | RENAMED_SCRATCHPADS_PATCH
 	#if UNFLOATVISIBLE_PATCH
 	{ MODKEY|Mod4Mask,              XK_space,      unfloatvisible,         {0} },
