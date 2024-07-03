@@ -409,12 +409,14 @@ static const char *const autostart[] = {
 #endif // COOL_AUTOSTART_PATCH
 
 #if RENAMED_SCRATCHPADS_PATCH
-static const char *scratchpadcmd[] = {"s", "st", "-n", "spterm", NULL};
+static const char *scratchpadcmd[] = {"s", "st", "-n", "term", NULL};
 #elif SCRATCHPADS_PATCH
-const char *spcmd1[] = {"st", "-n", "spterm", "-g", "120x34", NULL };
+const char *spcmd1[] = {"st", "-n", "term", "-g", "180x30", NULL };
+const char *spcmd2[] = {"st", "-n", "notes", "-g", "180x30", "-e", "sh", "-c", "tmux attach-session -t notes || tmux new-session -s notes -c ~/Documents/Notes/", NULL};
 static Sp scratchpads[] = {
    /* name          cmd  */
-   {"spterm",      spcmd1},
+   {"term",      spcmd1},
+   {"notes",      spcmd2},
 };
 #endif // SCRATCHPADS_PATCH
 
@@ -502,9 +504,10 @@ static const Rule rules[] = {
 	// RULE(.class = "Gimp", .tags = 1 << 4)
 	// RULE(.class = "Firefox", .tags = 1 << 7)
 	#if RENAMED_SCRATCHPADS_PATCH
-	RULE(.instance = "spterm", .scratchkey = 's', .isfloating = 1)
+	RULE(.instance = "term", .scratchkey = 's', .isfloating = 1)
 	#elif SCRATCHPADS_PATCH
-	RULE(.instance = "spterm", .tags = SPTAG(0), .isfloating = 1)
+	RULE(.instance = "term", .tags = SPTAG(0), .isfloating = 1)
+	RULE(.instance = "notes", .tags = SPTAG(1), .isfloating = 1)
 	#endif // SCRATCHPADS_PATCH
 };
 
@@ -1131,9 +1134,12 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,      setscratch,             {.v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_grave,      removescratch,          {.v = scratchpadcmd } },
 	#elif SCRATCHPADS_PATCH
-	{ MODKEY,                       XK_grave,      togglescratch,          {.ui = 0 } },
-	{ MODKEY|ControlMask,           XK_grave,      setscratch,             {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_grave,      removescratch,          {.ui = 0 } },
+	{ MODKEY,                       XK_t,      togglescratch,          {.ui = 0 } },
+	{ MODKEY|ControlMask,           XK_t,      setscratch,             {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_t,      removescratch,          {.ui = 0 } },
+	{ MODKEY,                       XK_n,      togglescratch,          {.ui = 1 } },
+	{ MODKEY|ControlMask,           XK_n,      setscratch,             {.ui = 1 } },
+	{ MODKEY|ShiftMask,             XK_n,      removescratch,          {.ui = 1 } },
 	#endif // SCRATCHPADS_PATCH | RENAMED_SCRATCHPADS_PATCH
 	#if UNFLOATVISIBLE_PATCH
 	{ MODKEY|Mod4Mask,              XK_space,      unfloatvisible,         {0} },
