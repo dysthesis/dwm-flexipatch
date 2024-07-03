@@ -905,7 +905,6 @@ static const Key on_empty_keys[] = {
 };
 #endif // ON_EMPTY_KEYS_PATCH
 
-static const char *passmenu[]	= { "bash ~/.local/scripts/passmenu", NULL };
 static const char *upvol[]	= { 
 	"wpctl",
 	"set-volume", 
