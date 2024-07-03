@@ -172,8 +172,8 @@ static char c000000[]                    = "#000000"; // placeholder value
 
 static char normfgcolor[]                = "#ffffff";
 static char normbgcolor[]                = "#000000";
-static char normbordercolor[]            = "#000000";
-static char normfloatcolor[]             = "#89b4fa";
+static char normbordercolor[]            = "#1e1e2e";
+static char normfloatcolor[]             = "#1e1e2e";
 
 static char selfgcolor[]                 = "#000000";
 static char selbgcolor[]                 = "#ffffff";
@@ -207,8 +207,8 @@ static char hidselbgcolor[]              = "#222222";
 
 static char urgfgcolor[]                 = "#bbbbbb";
 static char urgbgcolor[]                 = "#222222";
-static char urgbordercolor[]             = "#ff0000";
-static char urgfloatcolor[]              = "#db8fd9";
+static char urgbordercolor[]             = "#f38ba8";
+static char urgfloatcolor[]              = "#fab387";
 
 #if RENAMED_SCRATCHPADS_PATCH
 static char scratchselfgcolor[]          = "#FFF7D4";
