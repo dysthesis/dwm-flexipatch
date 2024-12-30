@@ -415,16 +415,18 @@ const char *signalscratch[] = {"signal-desktop", NULL };
 const char *termscratch[] = {
 	"ghostty", 
 	"--class=ghostty.term",
+	"--title=Terminal",
 	NULL 
 };
 const char *notesscratch[] = {
-	"ghostty", "--class=ghostty.notes", "-e", "tmux attach-session -t Notes || tmux new-session -s Notes -c ~/Documents/Notes/",
+	"ghostty", "--class=ghostty.notes", "--title=Notes", "-e", "tmux attach-session -t Notes || tmux new-session -s Notes -c ~/Documents/Notes/",
 	NULL
 };
 const char *btopscratch[] = {
 	"ghostty",
 	"--command='btop'",
 	"--class=ghostty.btop",
+	"--title=Btop",
 	NULL
 };
 static Sp scratchpads[] = {
