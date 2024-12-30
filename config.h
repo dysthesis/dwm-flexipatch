@@ -419,7 +419,7 @@ const char *termscratch[] = {
 	NULL 
 };
 const char *notesscratch[] = {
-	"ghostty", "--class=ghostty.notes", "--title=Notes", "-e", "tmux attach-session -t Notes || tmux new-session -s Notes -c ~/Documents/Notes/",
+	"ghostty", "--class=ghostty.notes", "--title=Notes", "-e", "tmux attach-session -t Notes || tmux new-session -s Notes -c ~/Documents/Notes/Contents/",
 	NULL
 };
 const char *btopscratch[] = {
@@ -522,14 +522,13 @@ static const Rule rules[] = {
 	RULE(.class = "org.wezfurlong.wezterm", .isterminal = 1)
 	RULE(.class = "ghostty", .isterminal = 1)
 	// RULE(.class = "Gimp", .tags = 1 << 4)
-	RULE(.class = "Firefox", .tags = 1 >> 8)
 	#if RENAMED_SCRATCHPADS_PATCH
 	RULE(.instance = "term", .scratchkey = 's', .isfloating = 1)
 	#elif SCRATCHPADS_PATCH
-	RULE(.instance = "signal",	.tags = SPTAG(0), .isfloating = 1)
-	RULE(.class = "ghostty.term",	.tags = SPTAG(1), .isfloating = 1)
-	RULE(.class = "ghostty.notes",	.tags = SPTAG(2), .isfloating = 1)
-	RULE(.class = "ghostty.btop",	.tags = SPTAG(3), .isfloating = 1)
+	RULE(.instance = "signal",	.tags = SPTAG(0), .isfloating = 1, .floatpos="50% 50% 1805W 1203H")
+	RULE(.class = "ghostty.term",	.tags = SPTAG(1), .isfloating = 1, .floatpos="50% 50% 1805W 1203H")
+	RULE(.class = "ghostty.notes",	.tags = SPTAG(2), .isfloating = 1, .floatpos="50% 50% 1805W 1203H")
+	RULE(.class = "ghostty.btop",	.tags = SPTAG(3), .isfloating = 1, .floatpos="50% 50% 1805W 1203H")
 	#endif // SCRATCHPADS_PATCH
 };
 
@@ -962,7 +961,7 @@ static const Key keys[] = {
 	#endif // KEYMODES_PATCH
 	{ MODKEY,                       XK_r,          spawn,                  {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,		XK_p,	       spawn,		       {.v = (const char*[]){ "passmenu", NULL } } },
-	{ MODKEY,		        XK_p,	       spawn,		       {.v = (const char*[]){ "flameshot", "gui", NULL } } },
+	{ MODKEY,		        XK_p,	       spawn,		       SHCMD("maim -s | xclip -selection clipboard -t image/png -i")},
 	{ MODKEY,		        XK_Return,     spawn,                  {.v = termcmd } },
 	#if RIODRAW_PATCH
 	{ MODKEY|ControlMask,           XK_p,          riospawnsync,           {.v = dmenucmd } },

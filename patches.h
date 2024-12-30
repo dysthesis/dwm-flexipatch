@@ -664,7 +664,7 @@
  * patches. The size and position can be specified using absolute, relative or
  * fixed co-ordinates and https://github.com/bakkeby/patches/wiki/floatpos/
  */
-#define FLOATPOS_PATCH 0
+#define FLOATPOS_PATCH 1
 
 /* Add-on functionality for the above: make the float positions respect outer
  * (vanity)gaps. */
