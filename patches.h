@@ -290,7 +290,7 @@
 /* This patch adds a border around the status bar(s) just like the border of
  * client windows. https://codemadness.org/paste/dwm-border-bar.patch
  */
-#define BAR_BORDER_PATCH 1
+#define BAR_BORDER_PATCH 0
 
 /* This patch centers the WM_NAME of the currently selected window on the status
  * bar. This is compatible with the wintitle, bartabgroups, flexwintitle and
@@ -417,7 +417,7 @@
 /* This patch draws and updates the statusbar on all monitors.
  * https://dwm.suckless.org/patches/statusallmons/
  */
-#define BAR_STATUSALLMONS_PATCH 1
+#define BAR_STATUSALLMONS_PATCH 0
 
 /* This patch enables colored text in the status bar. It changes the way colors
  * are defined in config.h allowing multiple color combinations for use in the
@@ -1228,7 +1228,7 @@
  *
  * https://dwm.suckless.org/patches/swallow/
  */
-#define SWALLOW_PATCH 0
+#define SWALLOW_PATCH 1
 
 /* This patch depends on the pertag patch and makes it possible to switch focus
  * with a single shortcut (MOD+s) instead of having to think if you should use
@@ -1405,14 +1405,14 @@
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-vanitygaps-6.2.diff
  * https://github.com/bakkeby/patches/blob/master/dwm/dwm-cfacts-vanitygaps-6.2.diff
  */
-#define VANITYGAPS_PATCH 1
+#define VANITYGAPS_PATCH 0
 
 /* This patch adds outer gaps for the monocle layout.
  * Most gaps patches tries to avoid gaps on the monocle layout, as it is often
  * used as a fullscreen mode, hence this is enabled separately from the main
  * vanitygaps patch.
  */
-#define VANITYGAPS_MONOCLE_PATCH 1
+#define VANITYGAPS_MONOCLE_PATCH 0
 
 /* By default MOD+Tab will take the user back to the previous tag only. If the
  * user keeps using MOD+Tab then the view will switch back and forth between the

@@ -164,7 +164,7 @@ static void (*bartabmonfns[])(Monitor *) = { NULL /* , customlayoutfn */ };
 #if BAR_PANGO_PATCH
 static const char font[]                 = "monospace 10";
 #else
-static const char *fonts[]               = { "JetBrainsMono Nerd Font:pixelsize=14:antialias=true:autohint=true" };
+static const char *fonts[]               = { "JBMono Nerd Font:pixelsize=14:antialias=true:autohint=true" };
 #endif // BAR_PANGO_PATCH
 static const char dmenufont[]            = "monospace:size=10";
 
@@ -411,16 +411,28 @@ static const char *const autostart[] = {
 #if RENAMED_SCRATCHPADS_PATCH
 static const char *scratchpadcmd[] = {"s", "st", "-n", "term", NULL};
 #elif SCRATCHPADS_PATCH
-const char *spcmd1[] = {"st", "-n", "term", "-g", "180x30", NULL };
-const char *spcmd2[] = {"st", "-n", "notes", "-g", "180x30", "-e", "sh", "-c", "tmux attach-session -t notes || tmux new-session -s notes -c ~/Documents/Notes/", NULL };
-const char *spcmd3[] = {"signal-desktop", NULL };
-const char *spcmd4[] = {"st", "-n", "task", "-g", "180x30", "taskwarrior-tui", NULL };
+const char *signalscratch[] = {"signal-desktop", NULL };
+const char *termscratch[] = {
+	"ghostty", 
+	"--class=ghostty.term",
+	NULL 
+};
+const char *notesscratch[] = {
+	"ghostty", "--class=ghostty.notes", "-e", "tmux attach-session -t Notes || tmux new-session -s Notes -c ~/Documents/Notes/",
+	NULL
+};
+const char *btopscratch[] = {
+	"ghostty",
+	"--command='btop'",
+	"--class=ghostty.btop",
+	NULL
+};
 static Sp scratchpads[] = {
    /* name          cmd  */
-   {"term",		spcmd1},
-   {"notes",		spcmd2},
-   {"signal",		spcmd3},
-   {"taskwarrior",      spcmd4},
+   {"signal",		signalscratch},
+   {"ghostty.term",	termscratch},
+   {"ghostty.notes",	notesscratch},
+   {"ghostty.btop",	btopscratch},
 };
 #endif // SCRATCHPADS_PATCH
 
@@ -505,15 +517,17 @@ static const Rule rules[] = {
 	RULE(.wintype = WTYPE "UTILITY", .isfloating = 1)
 	RULE(.wintype = WTYPE "TOOLBAR", .isfloating = 1)
 	RULE(.wintype = WTYPE "SPLASH", .isfloating = 1)
+	RULE(.class = "org.wezfurlong.wezterm", .isterminal = 1)
+	RULE(.class = "ghostty", .isterminal = 1)
 	// RULE(.class = "Gimp", .tags = 1 << 4)
-	// RULE(.class = "Firefox", .tags = 1 << 7)
+	RULE(.class = "Firefox", .tags = 1 >> 8)
 	#if RENAMED_SCRATCHPADS_PATCH
 	RULE(.instance = "term", .scratchkey = 's', .isfloating = 1)
 	#elif SCRATCHPADS_PATCH
-	RULE(.instance = "term", .tags = SPTAG(0), .isfloating = 1)
-	RULE(.instance = "notes", .tags = SPTAG(1), .isfloating = 1)
-	RULE(.instance = "signal", .tags = SPTAG(2), .isfloating = 1)
-	RULE(.instance = "task", .tags = SPTAG(3), .isfloating = 1)
+	RULE(.instance = "signal",	.tags = SPTAG(0), .isfloating = 1)
+	RULE(.class = "ghostty.term",	.tags = SPTAG(1), .isfloating = 1)
+	RULE(.class = "ghostty.notes",	.tags = SPTAG(2), .isfloating = 1)
+	RULE(.class = "ghostty.btop",	.tags = SPTAG(3), .isfloating = 1)
 	#endif // SCRATCHPADS_PATCH
 };
 
@@ -665,9 +679,9 @@ static const int scrollargs[][2] = {
 #if FLEXTILE_DELUXE_LAYOUT
 static const Layout layouts[] = {
 	/* symbol     arrange function, { nmaster, nstack, layout, master axis, stack axis, secondary stack axis, symbol func } */
-	{ "[]=",      flextile,         { -1, -1, SPLIT_VERTICAL, TOP_TO_BOTTOM, TOP_TO_BOTTOM, 0, NULL } }, // default tile layout
- 	{ "><>",      NULL,             {0} },    /* no layout function means floating behavior */
-	{ "[M]",      flextile,         { -1, -1, NO_SPLIT, MONOCLE, MONOCLE, 0, NULL } }, // monocle
+	{ "  ",      flextile,         { -1, -1, SPLIT_VERTICAL, TOP_TO_BOTTOM, TOP_TO_BOTTOM, 0, NULL } }, // default tile layout
+ 	{ "  ",      NULL,             {0} },    /* no layout function means floating behavior */
+	{ "   ",      flextile,         { -1, -1, NO_SPLIT, MONOCLE, MONOCLE, 0, NULL } }, // monocle
 	{ "|||",      flextile,         { -1, -1, SPLIT_VERTICAL, LEFT_TO_RIGHT, TOP_TO_BOTTOM, 0, NULL } }, // columns (col) layout
 	{ ">M>",      flextile,         { -1, -1, FLOATING_MASTER, LEFT_TO_RIGHT, LEFT_TO_RIGHT, 0, NULL } }, // floating master
 	{ "[D]",      flextile,         { -1, -1, SPLIT_VERTICAL, TOP_TO_BOTTOM, MONOCLE, 0, NULL } }, // deck
@@ -726,11 +740,11 @@ static const Layout layouts[] = {
 static const Layout layouts[] = {
 	/* symbol     arrange function */
 	#if TILE_LAYOUT
-	{ "[]=",      tile },    /* first entry is default */
+	{ "  ",      tile },    /* first entry is default */
 	#endif
-	{ "><>",      NULL },    /* no layout function means floating behavior */
+	{ "  ",      NULL },    /* no layout function means floating behavior */
 	#if MONOCLE_LAYOUT
-	{ "[M]",      monocle },
+	{ "   ",      monocle },
 	#endif
 	#if BSTACK_LAYOUT
 	{ "TTT",      bstack },
@@ -882,7 +896,7 @@ static const char *dmenucmd[] = {
 	NULL
 };
 
-static const char *termcmd[]  = { "st", NULL };
+static const char *termcmd[]  = { "ghostty", NULL };
 
 #if BAR_STATUSCMD_PATCH
 #if BAR_DWMBLOCKS_PATCH
@@ -922,10 +936,24 @@ static const char *downvol[]	= {
 	"5%-",
 	NULL
 };
-
+static const char *upbright[]	= {
+	"brightnessctl",
+	"set",
+	"5%+",
+	NULL
+};
+static const char *downbright[]	= {
+	"brightnessctl",
+	"set",
+	"5%-",
+	NULL
+};
 static const Key keys[] = {
 	{ 0,              XF86XK_AudioRaiseVolume, spawn,          {.v = upvol } },
         { 0,              XF86XK_AudioLowerVolume, spawn,          {.v = downvol } },
+	{ 0,              XF86XK_MonBrightnessUp, spawn,          {.v = upbright } },
+        { 0,              XF86XK_MonBrightnessDown, spawn,          {.v = downbright } },
+	{ MODKEY | ShiftMask,XK_Escape, spawn,  SHCMD("~/.local/scripts/powermenu")},
 	/* modifier                     key            function                argument */
 	#if KEYMODES_PATCH
 	{ MODKEY,                       XK_Escape,     setkeymode,             {.ui = COMMANDMODE} },
@@ -939,7 +967,7 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_Return,     riospawn,               {.v = termcmd } },
 	{ MODKEY,                       XK_s,          rioresize,              {0} },
 	#endif // RIODRAW_PATCH
-	{ MODKEY,                       XK_b,          togglebar,              {0} },
+	{ MODKEY|ShiftMask,                       XK_b,          togglebar,              {0} },
 	#if TOGGLETOPBAR_PATCH
 	{ MODKEY|ShiftMask,             XK_b,          toggletopbar,           {0} },
 	#endif // TOGGLETOPBAR_PATCH
@@ -1142,18 +1170,18 @@ static const Key keys[] = {
 	{ MODKEY|ControlMask,           XK_grave,      setscratch,             {.v = scratchpadcmd } },
 	{ MODKEY|ShiftMask,             XK_grave,      removescratch,          {.v = scratchpadcmd } },
 	#elif SCRATCHPADS_PATCH
-	{ MODKEY,                       XK_t,      togglescratch,          {.ui = 0 } },
-	{ MODKEY|ControlMask,           XK_t,      setscratch,             {.ui = 0 } },
-	{ MODKEY|ShiftMask,             XK_t,      removescratch,          {.ui = 0 } },
-	{ MODKEY,                       XK_n,      togglescratch,          {.ui = 1 } },
-	{ MODKEY|ControlMask,           XK_n,      setscratch,             {.ui = 1 } },
-	{ MODKEY|ShiftMask,             XK_n,      removescratch,          {.ui = 1 } },
-	{ MODKEY,                       XK_s,      togglescratch,          {.ui = 2 } },
-	{ MODKEY|ControlMask,           XK_s,      setscratch,             {.ui = 2 } },
-	{ MODKEY|ShiftMask,             XK_s,      removescratch,          {.ui = 2 } },
-	{ MODKEY,                       XK_d,      togglescratch,          {.ui = 3 } },
-	{ MODKEY|ControlMask,           XK_d,      setscratch,             {.ui = 3 } },
-	{ MODKEY|ShiftMask,             XK_d,      removescratch,          {.ui = 3 } },
+	{ MODKEY,                       XK_s,      togglescratch,          {.ui = 0 } },
+	{ MODKEY|ControlMask,           XK_s,      setscratch,             {.ui = 0 } },
+	{ MODKEY|ShiftMask,             XK_s,      removescratch,          {.ui = 0 } },
+	{ MODKEY,                       XK_t,      togglescratch,          {.ui = 1 } },
+	{ MODKEY|ControlMask,           XK_t,      setscratch,             {.ui = 1 } },
+	{ MODKEY|ShiftMask,             XK_t,      removescratch,          {.ui = 1 } },
+	{ MODKEY,                       XK_n,      togglescratch,          {.ui = 2 } },
+	{ MODKEY|ControlMask,           XK_n,      setscratch,             {.ui = 2 } },
+	{ MODKEY|ShiftMask,             XK_n,      removescratch,          {.ui = 2 } },
+	{ MODKEY,                       XK_b,      togglescratch,          {.ui = 3 } },
+	{ MODKEY|ControlMask,           XK_b,      setscratch,             {.ui = 3 } },
+	{ MODKEY|ShiftMask,             XK_b,      removescratch,          {.ui = 3 } },
 	#endif // SCRATCHPADS_PATCH | RENAMED_SCRATCHPADS_PATCH
 	#if UNFLOATVISIBLE_PATCH
 	{ MODKEY|Mod4Mask,              XK_space,      unfloatvisible,         {0} },
